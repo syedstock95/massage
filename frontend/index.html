@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find licensed massage therapists near you. Book appointments online with verified professionals in your area.">
+    <meta name="theme-color" content="#0d9488">
+    <title>Find Massage Therapists Near You | MassageNearMe</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="images/icon-192.png">
+    <link rel="apple-touch-icon" href="images/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon material-icons-round">spa</span>
+                <span class="logo-text">MassageNearMe</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html" class="nav-link active">Find Therapists</a>
+                <a href="pricing.html" class="nav-link">For Therapists</a>
+                <a href="login.html" class="nav-link nav-link-login">Login</a>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span class="material-icons-round">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Find the Perfect Massage Therapist</h1>
+            <p class="hero-subtitle">Search thousands of licensed professionals in your area. Book online instantly.</p>
+            
+            <!-- Search Box -->
+            <div class="search-box">
+                <div class="search-input-group">
+                    <span class="search-icon material-icons-round">location_on</span>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="Enter zip code or city..."
+                        autocomplete="off"
+                    >
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+                <button class="search-btn" id="searchBtn">
+                    <span class="material-icons-round">search</span>
+                    <span class="search-btn-text">Search</span>
+                </button>
+            </div>
+
+            <!-- Quick filters -->
+            <div class="quick-filters">
+                <span class="quick-filter-label">Popular:</span>
+                <button class="quick-filter" data-service="swedish">Swedish</button>
+                <button class="quick-filter" data-service="deep tissue">Deep Tissue</button>
+                <button class="quick-filter" data-service="sports">Sports</button>
+                <button class="quick-filter" data-service="hot stone">Hot Stone</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-icon">
+                        <span class="material-icons-round">search</span>
+                    </div>
+                    <h3 class="step-title">Search</h3>
+                    <p class="step-desc">Enter your zip code to find licensed massage therapists nearby</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <span class="material-icons-round">compare</span>
+                    </div>
+                    <h3 class="step-title">Compare</h3>
+                    <p class="step-desc">View profiles, services, prices, and read verified reviews</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <span class="material-icons-round">calendar_month</span>
+                    </div>
+                    <h3 class="step-title">Book</h3>
+                    <p class="step-desc">Schedule your appointment online in just a few clicks</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <span class="material-icons-round">self_improvement</span>
+                    </div>
+                    <h3 class="step-title">Relax</h3>
+                    <p class="step-desc">Enjoy your massage and leave a review to help others</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Services -->
+    <section class="services-section">
+        <div class="container">
+            <h2 class="section-title">Popular Massage Types</h2>
+            <div class="services-grid" id="servicesGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- For Therapists CTA -->
+    <section class="therapist-cta">
+        <div class="container">
+            <div class="cta-card">
+                <div class="cta-content">
+                    <h2 class="cta-title">Are You a Massage Therapist?</h2>
+                    <p class="cta-desc">Join thousands of professionals growing their practice. Get discovered by new clients, manage bookings, and build your reputation.</p>
+                    <div class="cta-features">
+                        <div class="cta-feature">
+                            <span class="material-icons-round">check_circle</span>
+                            <span>Free basic listing</span>
+                        </div>
+                        <div class="cta-feature">
+                            <span class="material-icons-round">check_circle</span>
+                            <span>Online booking system</span>
+                        </div>
+                        <div class="cta-feature">
+                            <span class="material-icons-round">check_circle</span>
+                            <span>Client management</span>
+                        </div>
+                    </div>
+                    <a href="pricing.html" class="cta-btn">List Your Practice →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-icon material-icons-round">spa</span>
+                        <span class="logo-text">MassageNearMe</span>
+                    </div>
+                    <p class="footer-desc">Connecting you with licensed massage therapists across the United States.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>For Clients</h4>
+                    <a href="index.html">Find Therapists</a>
+                    <a href="search.html">Browse by City</a>
+                    <a href="#">How It Works</a>
+                </div>
+                <div class="footer-links">
+                    <h4>For Therapists</h4>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="login.html">Login</a>
+                    <a href="login.html?register=therapist">Sign Up</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="#">About Us</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MassageNearMe. All rights reserved.</p>
+                <p>A product of <a href="https://officesoftsolutions.com" target="_blank">Office Soft Solutions</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="mobile-menu">
+            <button class="mobile-menu-close" id="mobileMenuClose">
+                <span class="material-icons-round">close</span>
+            </button>
+            <nav class="mobile-nav">
+                <a href="index.html" class="mobile-nav-link active">Find Therapists</a>
+                <a href="pricing.html" class="mobile-nav-link">For Therapists</a>
+                <a href="login.html" class="mobile-nav-link">Login</a>
+                <a href="login.html?register=therapist" class="mobile-nav-link btn-primary">List Your Practice</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Install PWA Banner -->
+    <div class="install-banner" id="installBanner">
+        <div class="install-content">
+            <span class="material-icons-round">download</span>
+            <span>Install app for quick access</span>
+        </div>
+        <button class="install-btn" id="installBtn">Install</button>
+        <button class="install-close" id="installClose">
+            <span class="material-icons-round">close</span>
+        </button>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>

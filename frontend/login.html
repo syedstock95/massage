@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login or register for MassageNearMe">
+    <meta name="theme-color" content="#0d9488">
+    <title>Login | MassageNearMe</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="images/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon material-icons-round">spa</span>
+                <span class="logo-text">MassageNearMe</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="auth-page">
+        <div class="auth-container">
+            <!-- Login Form -->
+            <div class="auth-card" id="loginCard">
+                <div class="auth-header">
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to manage your account</p>
+                </div>
+                
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons-round">email</span>
+                            <input type="email" id="loginEmail" required placeholder="you@example.com">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons-round">lock</span>
+                            <input type="password" id="loginPassword" required placeholder="Enter your password">
+                            <button type="button" class="toggle-password" data-target="loginPassword">
+                                <span class="material-icons-round">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-error" id="loginError"></div>
+                    
+                    <button type="submit" class="auth-btn">
+                        <span>Sign In</span>
+                        <span class="material-icons-round">arrow_forward</span>
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="#" id="showRegister">Create one</a></p>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-card" id="registerCard" style="display: none;">
+                <div class="auth-header">
+                    <h1>Create Account</h1>
+                    <p>Join MassageNearMe today</p>
+                </div>
+                
+                <!-- Account Type Toggle -->
+                <div class="account-type-toggle">
+                    <button type="button" class="type-btn active" data-type="consumer">
+                        <span class="material-icons-round">person</span>
+                        <span>Client</span>
+                    </button>
+                    <button type="button" class="type-btn" data-type="therapist">
+                        <span class="material-icons-round">spa</span>
+                        <span>Therapist</span>
+                    </button>
+                </div>
+                
+                <form id="registerForm" class="auth-form">
+                    <input type="hidden" id="registerRole" value="consumer">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="registerFirstName">First Name</label>
+                            <input type="text" id="registerFirstName" required placeholder="John">
+                        </div>
+                        <div class="form-group">
+                            <label for="registerLastName">Last Name</label>
+                            <input type="text" id="registerLastName" required placeholder="Doe">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerEmail">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons-round">email</span>
+                            <input type="email" id="registerEmail" required placeholder="you@example.com">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerPhone">Phone Number</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons-round">phone</span>
+                            <input type="tel" id="registerPhone" placeholder="(555) 123-4567">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons-round">lock</span>
+                            <input type="password" id="registerPassword" required minlength="8" placeholder="Min 8 characters">
+                            <button type="button" class="toggle-password" data-target="registerPassword">
+                                <span class="material-icons-round">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons-round">lock</span>
+                            <input type="password" id="registerConfirmPassword" required placeholder="Repeat password">
+                        </div>
+                    </div>
+                    
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="registerTerms" required>
+                        <label for="registerTerms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                    </div>
+                    
+                    <div class="form-error" id="registerError"></div>
+                    
+                    <button type="submit" class="auth-btn">
+                        <span>Create Account</span>
+                        <span class="material-icons-round">arrow_forward</span>
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="#" id="showLogin">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

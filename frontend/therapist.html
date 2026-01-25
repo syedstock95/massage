@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Massage Therapist Profile">
+    <meta name="theme-color" content="#0d9488">
+    <title>Therapist Profile | MassageNearMe</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="images/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/therapist.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon material-icons-round">spa</span>
+                <span class="logo-text">MassageNearMe</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Find Therapists</a>
+                <a href="pricing.html" class="nav-link">For Therapists</a>
+                <a href="login.html" class="nav-link nav-link-login">Login</a>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span class="material-icons-round">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="profile-page">
+        <!-- Loading State -->
+        <div class="loading-state" id="loadingState">
+            <div class="spinner"></div>
+            <p>Loading profile...</p>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="profile-content" id="profileContent" style="display: none;">
+            <!-- Profile Header -->
+            <section class="profile-header">
+                <div class="container">
+                    <div class="profile-hero">
+                        <div class="profile-image-wrapper">
+                            <img src="" alt="" id="profileImage" class="profile-image">
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-badges" id="profileBadges"></div>
+                            <h1 id="profileName">Therapist Name</h1>
+                            <div class="profile-location" id="profileLocation">
+                                <span class="material-icons-round">location_on</span>
+                                <span>Location</span>
+                            </div>
+                            <div class="profile-rating" id="profileRating"></div>
+                            <div class="profile-meta">
+                                <span id="profileExperience"></span>
+                                <span id="profileLicense"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Content -->
+            <div class="container">
+                <div class="profile-grid">
+                    <!-- Left Column -->
+                    <div class="profile-main">
+                        <!-- About -->
+                        <section class="profile-section" id="aboutSection">
+                            <h2>About</h2>
+                            <p id="profileBio">No bio available.</p>
+                        </section>
+
+                        <!-- Services -->
+                        <section class="profile-section" id="servicesSection">
+                            <h2>Services & Pricing</h2>
+                            <div class="services-list" id="servicesList">
+                                <p class="no-data">No services listed.</p>
+                            </div>
+                        </section>
+
+                        <!-- Reviews -->
+                        <section class="profile-section" id="reviewsSection">
+                            <h2>Reviews</h2>
+                            <div class="reviews-container" id="reviewsContainer">
+                                <p class="no-data">No reviews yet.</p>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Right Column - Booking Sidebar -->
+                    <aside class="profile-sidebar">
+                        <div class="booking-card" id="bookingCard">
+                            <h3>Book an Appointment</h3>
+                            
+                            <div class="booking-contact" id="bookingContact" style="display: none;">
+                                <p>Contact this therapist directly:</p>
+                                <a href="#" id="contactPhone" class="contact-btn">
+                                    <span class="material-icons-round">phone</span>
+                                    <span>Call</span>
+                                </a>
+                                <a href="#" id="contactEmail" class="contact-btn">
+                                    <span class="material-icons-round">email</span>
+                                    <span>Email</span>
+                                </a>
+                            </div>
+
+                            <form id="bookingForm" style="display: none;">
+                                <div class="form-group">
+                                    <label>Select Service</label>
+                                    <select id="bookingService" required>
+                                        <option value="">Choose a service...</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Select Date</label>
+                                    <input type="date" id="bookingDate" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Select Time</label>
+                                    <select id="bookingTime" required disabled>
+                                        <option value="">Select date first</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Your Name</label>
+                                    <input type="text" id="bookingName" required placeholder="John Doe">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Your Email</label>
+                                    <input type="email" id="bookingEmail" required placeholder="you@example.com">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Your Phone</label>
+                                    <input type="tel" id="bookingPhone" placeholder="(555) 123-4567">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Notes (optional)</label>
+                                    <textarea id="bookingNotes" rows="3" placeholder="Any special requests..."></textarea>
+                                </div>
+                                
+                                <div class="booking-summary" id="bookingSummary" style="display: none;">
+                                    <div class="summary-row">
+                                        <span>Service:</span>
+                                        <span id="summaryService"></span>
+                                    </div>
+                                    <div class="summary-row">
+                                        <span>Duration:</span>
+                                        <span id="summaryDuration"></span>
+                                    </div>
+                                    <div class="summary-row total">
+                                        <span>Total:</span>
+                                        <span id="summaryPrice"></span>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="booking-submit">
+                                    <span>Request Booking</span>
+                                    <span class="material-icons-round">arrow_forward</span>
+                                </button>
+                            </form>
+
+                            <div class="booking-free-notice" id="bookingFreeNotice" style="display: none;">
+                                <span class="material-icons-round">info</span>
+                                <p>This therapist doesn't accept online bookings yet. Please contact them directly.</p>
+                            </div>
+                        </div>
+
+                        <!-- Availability -->
+                        <div class="availability-card" id="availabilityCard">
+                            <h4>Availability</h4>
+                            <div class="availability-list" id="availabilityList">
+                                <p class="no-data">Not specified</p>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+
+        <!-- Not Found State -->
+        <div class="not-found-state" id="notFoundState" style="display: none;">
+            <span class="material-icons-round">person_off</span>
+            <h2>Therapist Not Found</h2>
+            <p>This profile doesn't exist or has been removed.</p>
+            <a href="index.html" class="btn-primary">Find Therapists</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer footer-compact">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 MassageNearMe. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/therapist.js"></script>
+</body>
+</html>

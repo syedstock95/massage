@@ -1,0 +1,440 @@
+/* Therapist Profile Page Styles */
+
+.profile-page {
+    padding-top: 72px;
+    min-height: 100vh;
+}
+
+/* Loading State */
+.loading-state {
+    text-align: center;
+    padding: 120px 24px;
+}
+
+/* Not Found State */
+.not-found-state {
+    text-align: center;
+    padding: 120px 24px;
+}
+
+.not-found-state .material-icons-round {
+    font-size: 80px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.not-found-state h2 {
+    margin-bottom: 12px;
+}
+
+.not-found-state p {
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+}
+
+/* Profile Header */
+.profile-header {
+    background: linear-gradient(135deg, var(--bg-dark) 0%, #115e59 100%);
+    padding: 60px 0;
+}
+
+.profile-hero {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+.profile-image-wrapper {
+    flex-shrink: 0;
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    border-radius: var(--radius-xl);
+    object-fit: cover;
+    border: 4px solid rgba(255,255,255,0.2);
+    background: var(--bg-primary);
+}
+
+.profile-info {
+    color: white;
+}
+
+.profile-badges {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.profile-info h1 {
+    font-size: var(--font-4xl);
+    color: white;
+    margin-bottom: 12px;
+}
+
+.profile-location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-lg);
+    opacity: 0.9;
+    margin-bottom: 16px;
+}
+
+.profile-rating {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.profile-rating .rating-stars .material-icons-round {
+    color: var(--accent);
+}
+
+.profile-rating .rating-text {
+    color: rgba(255,255,255,0.8);
+}
+
+.profile-meta {
+    display: flex;
+    gap: 24px;
+    font-size: var(--font-base);
+    opacity: 0.8;
+}
+
+.profile-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Profile Grid */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 40px;
+    padding: 40px 0;
+}
+
+/* Profile Sections */
+.profile-section {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.profile-section h2 {
+    font-size: var(--font-xl);
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.profile-section p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.no-data {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Services List */
+.services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.service-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+}
+
+.service-name {
+    font-weight: 600;
+    font-size: var(--font-lg);
+    color: var(--text-primary);
+}
+
+.service-duration {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.service-price {
+    font-size: var(--font-xl);
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Reviews Container */
+.reviews-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.review-card {
+    padding: 20px;
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.review-author {
+    font-weight: 600;
+}
+
+.review-date {
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+}
+
+.review-content {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Sidebar */
+.profile-sidebar {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+}
+
+.booking-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 24px;
+}
+
+.booking-card h3 {
+    font-size: var(--font-xl);
+    margin-bottom: 24px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* Booking Contact */
+.booking-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.booking-contact p {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+    margin-bottom: 8px;
+}
+
+.contact-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px;
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.contact-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Booking Form */
+.booking-card .form-group {
+    margin-bottom: 20px;
+}
+
+.booking-card label {
+    display: block;
+    font-size: var(--font-sm);
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.booking-card input,
+.booking-card select,
+.booking-card textarea {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: var(--font-base);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: white;
+    color: var(--text-primary);
+}
+
+.booking-card input:focus,
+.booking-card select:focus,
+.booking-card textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.booking-summary {
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.summary-row.total {
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    padding-top: 16px;
+    font-size: var(--font-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.booking-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--font-lg);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.booking-submit:hover {
+    background: var(--primary-dark);
+}
+
+.booking-free-notice {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(245, 158, 11, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+}
+
+.booking-free-notice .material-icons-round {
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.booking-free-notice p {
+    font-size: var(--font-sm);
+    margin: 0;
+}
+
+/* Availability Card */
+.availability-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.availability-card h4 {
+    font-size: var(--font-lg);
+    margin-bottom: 16px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.availability-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.availability-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: var(--font-sm);
+}
+
+.availability-row:last-child {
+    border-bottom: none;
+}
+
+.availability-day {
+    font-weight: 500;
+}
+
+.availability-time {
+    color: var(--text-secondary);
+}
+
+.availability-closed {
+    color: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-hero {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-info h1 {
+        font-size: var(--font-2xl);
+    }
+    
+    .profile-location,
+    .profile-rating,
+    .profile-meta {
+        justify-content: center;
+    }
+    
+    .profile-badges {
+        justify-content: center;
+    }
+    
+    .profile-section {
+        padding: 24px;
+    }
+}

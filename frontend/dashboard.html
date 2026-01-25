@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Therapist Dashboard - Manage your practice">
+    <meta name="theme-color" content="#0d9488">
+    <title>Dashboard | MassageNearMe</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="images/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">
+                <span class="logo-icon material-icons-round">spa</span>
+                <span class="logo-text">MassageNearMe</span>
+            </a>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="#overview" class="nav-item active" data-section="overview">
+                <span class="material-icons-round">dashboard</span>
+                <span>Overview</span>
+            </a>
+            <a href="#bookings" class="nav-item" data-section="bookings">
+                <span class="material-icons-round">calendar_month</span>
+                <span>Bookings</span>
+                <span class="nav-badge" id="pendingCount">0</span>
+            </a>
+            <a href="#profile" class="nav-item" data-section="profile">
+                <span class="material-icons-round">person</span>
+                <span>My Profile</span>
+            </a>
+            <a href="#services" class="nav-item" data-section="services">
+                <span class="material-icons-round">spa</span>
+                <span>Services</span>
+            </a>
+            <a href="#availability" class="nav-item" data-section="availability">
+                <span class="material-icons-round">schedule</span>
+                <span>Availability</span>
+            </a>
+            <a href="#reviews" class="nav-item" data-section="reviews">
+                <span class="material-icons-round">star</span>
+                <span>Reviews</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="pricing.html" class="upgrade-btn" id="upgradeBtn">
+                <span class="material-icons-round">rocket_launch</span>
+                <span>Upgrade to Pro</span>
+            </a>
+            <button class="logout-btn" id="logoutBtn">
+                <span class="material-icons-round">logout</span>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Top Bar -->
+        <header class="dashboard-header">
+            <button class="menu-toggle" id="menuToggle">
+                <span class="material-icons-round">menu</span>
+            </button>
+            <div class="header-title">
+                <h1 id="pageTitle">Dashboard</h1>
+            </div>
+            <div class="header-actions">
+                <a href="#" class="view-profile-link" id="viewProfileLink">
+                    <span class="material-icons-round">visibility</span>
+                    View Public Profile
+                </a>
+            </div>
+        </header>
+
+        <!-- Content Sections -->
+        <div class="dashboard-content">
+            
+            <!-- Overview Section -->
+            <section class="content-section active" id="section-overview">
+                <div class="welcome-banner" id="welcomeBanner">
+                    <div class="welcome-content">
+                        <h2>Welcome back, <span id="userName">Therapist</span>!</h2>
+                        <p>Here's what's happening with your practice today.</p>
+                    </div>
+                </div>
+                
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <span class="material-icons-round">visibility</span>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="statViews">0</span>
+                            <span class="stat-label">Profile Views</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <span class="material-icons-round">event_available</span>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="statBookings">0</span>
+                            <span class="stat-label">Total Bookings</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon yellow">
+                            <span class="material-icons-round">star</span>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="statRating">0.0</span>
+                            <span class="stat-label">Average Rating</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <span class="material-icons-round">attach_money</span>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="statRevenue">$0</span>
+                            <span class="stat-label">This Month</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Upcoming Bookings -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Upcoming Bookings</h3>
+                        <a href="#bookings" class="view-all-link">View All</a>
+                    </div>
+                    <div class="card-content">
+                        <div class="bookings-list" id="upcomingBookings">
+                            <div class="empty-state small">
+                                <span class="material-icons-round">event_busy</span>
+                                <p>No upcoming bookings</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="actions-grid">
+                        <button class="action-btn" data-section="profile">
+                            <span class="material-icons-round">edit</span>
+                            <span>Edit Profile</span>
+                        </button>
+                        <button class="action-btn" data-section="services">
+                            <span class="material-icons-round">add_circle</span>
+                            <span>Add Service</span>
+                        </button>
+                        <button class="action-btn" data-section="availability">
+                            <span class="material-icons-round">schedule</span>
+                            <span>Set Hours</span>
+                        </button>
+                        <a href="pricing.html" class="action-btn highlight">
+                            <span class="material-icons-round">rocket_launch</span>
+                            <span>Upgrade Plan</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bookings Section -->
+            <section class="content-section" id="section-bookings">
+                <div class="section-header">
+                    <h2>Bookings</h2>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-status="">All</button>
+                        <button class="filter-tab" data-status="pending">Pending</button>
+                        <button class="filter-tab" data-status="confirmed">Confirmed</button>
+                        <button class="filter-tab" data-status="completed">Completed</button>
+                    </div>
+                </div>
+                <div class="bookings-table-container">
+                    <table class="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Service</th>
+                                <th>Date & Time</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTableBody">
+                            <tr>
+                                <td colspan="6" class="empty-cell">No bookings found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section class="content-section" id="section-profile">
+                <div class="section-header">
+                    <h2>My Profile</h2>
+                </div>
+                <form id="profileForm" class="profile-form">
+                    <div class="form-card">
+                        <h3>Basic Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="businessName">Business Name</label>
+                                <input type="text" id="businessName" placeholder="e.g., Healing Hands Massage">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="bio">Bio / About</label>
+                                <textarea id="bio" rows="4" placeholder="Tell clients about yourself and your practice..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="yearsExperience">Years of Experience</label>
+                                <input type="number" id="yearsExperience" min="0" max="50">
+                            </div>
+                            <div class="form-group">
+                                <label for="licenseNumber">License Number</label>
+                                <input type="text" id="licenseNumber" placeholder="LMT-12345">
+                            </div>
+                            <div class="form-group">
+                                <label for="licenseState">License State</label>
+                                <select id="licenseState">
+                                    <option value="">Select State</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="CA">California</option>
+                                    <option value="NY">New York</option>
+                                    <option value="FL">Florida</option>
+                                    <!-- More states added via JS -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-card">
+                        <h3>Location</h3>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="addressLine1">Street Address</label>
+                                <input type="text" id="addressLine1" placeholder="123 Main St">
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" placeholder="Houston">
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input type="text" id="state" placeholder="TX" maxlength="2">
+                            </div>
+                            <div class="form-group">
+                                <label for="zip">Zip Code</label>
+                                <input type="text" id="zip" placeholder="77001">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-card">
+                        <h3>Contact & Settings</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" placeholder="(555) 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="website">Website</label>
+                                <input type="url" id="website" placeholder="https://yourwebsite.com">
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="acceptsNewClients" checked>
+                                    <span>Accepting New Clients</span>
+                                </label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="offersMobile">
+                                    <span>Offer Mobile/In-Home Service</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Services Section -->
+            <section class="content-section" id="section-services">
+                <div class="section-header">
+                    <h2>My Services</h2>
+                    <button class="btn-primary" id="addServiceBtn">
+                        <span class="material-icons-round">add</span>
+                        Add Service
+                    </button>
+                </div>
+                <div class="services-list" id="servicesList">
+                    <div class="empty-state">
+                        <span class="material-icons-round">spa</span>
+                        <h3>No services added yet</h3>
+                        <p>Add the massage services you offer to attract clients</p>
+                        <button class="btn-primary" id="addFirstService">Add Your First Service</button>
+                    </div>
+                </div>
+                
+                <!-- Add Service Modal -->
+                <div class="modal" id="serviceModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Add Service</h3>
+                            <button class="modal-close" id="closeServiceModal">
+                                <span class="material-icons-round">close</span>
+                            </button>
+                        </div>
+                        <form id="serviceForm">
+                            <div class="form-group">
+                                <label for="serviceType">Service Type</label>
+                                <select id="serviceType" required>
+                                    <option value="">Select a service...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceDuration">Duration (minutes)</label>
+                                <select id="serviceDuration" required>
+                                    <option value="30">30 minutes</option>
+                                    <option value="60" selected>60 minutes</option>
+                                    <option value="90">90 minutes</option>
+                                    <option value="120">120 minutes</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="servicePrice">Price ($)</label>
+                                <input type="number" id="servicePrice" min="0" step="5" required placeholder="85">
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceDescription">Description (optional)</label>
+                                <textarea id="serviceDescription" rows="3" placeholder="Describe what clients can expect..."></textarea>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-secondary" id="cancelService">Cancel</button>
+                                <button type="submit" class="btn-primary">Add Service</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Availability Section -->
+            <section class="content-section" id="section-availability">
+                <div class="section-header">
+                    <h2>Availability</h2>
+                </div>
+                <p class="section-desc">Set your regular weekly hours. Clients can only book during these times.</p>
+                
+                <form id="availabilityForm">
+                    <div class="availability-grid" id="availabilityGrid">
+                        <!-- Generated by JS -->
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save Availability</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Reviews Section -->
+            <section class="content-section" id="section-reviews">
+                <div class="section-header">
+                    <h2>Reviews</h2>
+                </div>
+                <div class="reviews-summary" id="reviewsSummary">
+                    <div class="rating-big">
+                        <span class="rating-value" id="avgRating">0.0</span>
+                        <div class="rating-stars" id="ratingStars"></div>
+                        <span class="rating-count" id="reviewCount">0 reviews</span>
+                    </div>
+                </div>
+                <div class="reviews-list" id="reviewsList">
+                    <div class="empty-state">
+                        <span class="material-icons-round">rate_review</span>
+                        <h3>No reviews yet</h3>
+                        <p>Reviews will appear here after clients book and rate your services</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

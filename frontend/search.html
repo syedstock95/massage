@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Search results for massage therapists in your area">
+    <meta name="theme-color" content="#0d9488">
+    <title>Search Results | MassageNearMe</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="images/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/search.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon material-icons-round">spa</span>
+                <span class="logo-text">MassageNearMe</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Find Therapists</a>
+                <a href="pricing.html" class="nav-link">For Therapists</a>
+                <a href="login.html" class="nav-link nav-link-login">Login</a>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span class="material-icons-round">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="search-page">
+        <!-- Search Bar -->
+        <section class="search-header">
+            <div class="container">
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <span class="material-icons-round">location_on</span>
+                        <input type="text" id="searchInput" placeholder="Enter zip code or city..." autocomplete="off">
+                        <div class="search-suggestions" id="searchSuggestions"></div>
+                    </div>
+                    <div class="search-filters-toggle">
+                        <button class="filter-toggle-btn" id="filterToggleBtn">
+                            <span class="material-icons-round">tune</span>
+                            <span>Filters</span>
+                        </button>
+                    </div>
+                    <button class="search-btn" id="searchBtn">
+                        <span class="material-icons-round">search</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters Panel -->
+        <section class="filters-panel" id="filtersPanel">
+            <div class="container">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label class="filter-label">Service Type</label>
+                        <select id="filterService" class="filter-select">
+                            <option value="">All Services</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Distance</label>
+                        <select id="filterRadius" class="filter-select">
+                            <option value="10">Within 10 miles</option>
+                            <option value="25" selected>Within 25 miles</option>
+                            <option value="50">Within 50 miles</option>
+                            <option value="100">Within 100 miles</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Min Rating</label>
+                        <select id="filterRating" class="filter-select">
+                            <option value="">Any Rating</option>
+                            <option value="4">4+ Stars</option>
+                            <option value="4.5">4.5+ Stars</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Sort By</label>
+                        <select id="filterSort" class="filter-select">
+                            <option value="distance">Distance</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="reviews">Most Reviews</option>
+                        </select>
+                    </div>
+                    <div class="filter-group filter-checkboxes">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="filterAcceptsNew">
+                            <span>Accepting New Clients</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="filterMobile">
+                            <span>Mobile/In-Home</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results -->
+        <section class="search-results">
+            <div class="container">
+                <!-- Results Header -->
+                <div class="results-header" id="resultsHeader">
+                    <h1 class="results-title" id="resultsTitle">Searching...</h1>
+                    <p class="results-count" id="resultsCount"></p>
+                </div>
+
+                <!-- Loading State -->
+                <div class="loading-state" id="loadingState">
+                    <div class="spinner"></div>
+                    <p>Finding therapists near you...</p>
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <span class="material-icons-round">search_off</span>
+                    <h3>No therapists found</h3>
+                    <p>Try expanding your search radius or adjusting filters</p>
+                </div>
+
+                <!-- Results Grid -->
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Therapist cards populated by JS -->
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" id="pagination" style="display: none;">
+                    <button class="pagination-btn" id="prevBtn" disabled>
+                        <span class="material-icons-round">chevron_left</span>
+                        Previous
+                    </button>
+                    <span class="pagination-info" id="paginationInfo">Page 1 of 1</span>
+                    <button class="pagination-btn" id="nextBtn" disabled>
+                        Next
+                        <span class="material-icons-round">chevron_right</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer footer-compact">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 MassageNearMe. All rights reserved.</p>
+                <p>A product of <a href="https://officesoftsolutions.com" target="_blank">Office Soft Solutions</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/search.js"></script>
+</body>
+</html>
