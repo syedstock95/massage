@@ -8,13 +8,11 @@ const CONFIG = {
             return 'https://api-massage.aiappspro.com/api';
         }
         if (hostname.includes('railway.app')) {
-            // Extract the project name from frontend URL and construct API URL
-            return hostname.replace('massage-frontend', 'massage-api').replace(/^/, 'https://') + '/api';
+            return 'https://massage-production-2ecf.up.railway.app/api';
         }
         // Local development
         return 'http://localhost:3001/api';
     })(),
-    
     // App Info
     APP_NAME: 'MassageNearMe',
     APP_VERSION: '1.0.0',
