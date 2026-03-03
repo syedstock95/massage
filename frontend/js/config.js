@@ -13,6 +13,7 @@ const CONFIG = {
         // Local development
         return 'http://localhost:3001/api';
     })(),
+    
     // App Info
     APP_NAME: 'MassageNearMe',
     APP_VERSION: '1.0.0',
