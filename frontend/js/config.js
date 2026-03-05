@@ -3,10 +3,11 @@ const CONFIG = {
     // API Base URL - Auto-detect based on environment
     API_URL: (() => {
         const hostname = window.location.hostname;
-        // Production: Railway or custom domain
-        if (hostname.includes('aiappspro.com')) {
-            return 'https://api-massage.aiappspro.com/api';
+        // Production: Custom domain
+        if (hostname.includes('getrelaxtouch.com')) {
+            return 'https://api.getrelaxtouch.com/api';
         }
+        // Production: Railway
         if (hostname.includes('railway.app')) {
             return 'https://massage-production-2ecf.up.railway.app/api';
         }
@@ -15,7 +16,7 @@ const CONFIG = {
     })(),
     
     // App Info
-    APP_NAME: 'MassageNearMe',
+    APP_NAME: 'GetRelaxTouch',
     APP_VERSION: '1.0.0',
     
     // Default search settings

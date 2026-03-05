@@ -11,6 +11,9 @@ const { Pool } = require('pg');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Trust proxy for Railway
+app.set('trust proxy', 1);
+
 // Database connection
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -39,6 +42,8 @@ const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:5500',
     'http://127.0.0.1:5500',
+    'https://getrelaxtouch.com',
+    'https://www.getrelaxtouch.com',
     process.env.FRONTEND_URL
 ].filter(Boolean);
 
@@ -49,8 +54,8 @@ app.use(cors({
         if (allowedOrigins.includes(origin)) {
             return callback(null, true);
         }
-        // Allow any subdomain of aiappspro.com
-        if (origin.endsWith('.aiappspro.com') || origin.endsWith('.railway.app')) {
+        // Allow any subdomain of getrelaxtouch.com or railway.app
+        if (origin.endsWith('.getrelaxtouch.com') || origin.endsWith('.railway.app')) {
             return callback(null, true);
         }
         callback(new Error('Not allowed by CORS'));
