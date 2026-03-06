@@ -1,198 +1,272 @@
-// Auth Routes
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+// Auth Page JavaScript
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-const JWT_EXPIRES = '7d';
-
-// Register
-router.post('/register', async (req, res) => {
-    const db = req.app.locals.db;
-    const { email, password, firstName, lastName, phone, role = 'consumer' } = req.body;
-
-    try {
-        // Validate input
-        if (!email || !password) {
-            return res.status(400).json({ error: { message: 'Email and password required' } });
-        }
-
-        // Check if email exists
-        const existing = await db.query('SELECT id FROM users WHERE email = $1', [email.toLowerCase()]);
-        if (existing.rows.length > 0) {
-            return res.status(400).json({ error: { message: 'Email already registered' } });
-        }
-
-        // Hash password
-        const salt = await bcrypt.genSalt(10);
-        const passwordHash = await bcrypt.hash(password, salt);
-
-        // Create user
-        const result = await db.query(
-            `INSERT INTO users (email, password_hash, first_name, last_name, phone, role)
-             VALUES ($1, $2, $3, $4, $5, $6)
-             RETURNING id, email, first_name, last_name, role, created_at`,
-            [email.toLowerCase(), passwordHash, firstName, lastName, phone, role]
-        );
-
-        const user = result.rows[0];
-
-        // If registering as therapist, create therapist profile
-        if (role === 'therapist') {
-            await db.query(
-                `INSERT INTO therapists (user_id) VALUES ($1)`,
-                [user.id]
-            );
-        }
-
-        // Generate token
-        const token = jwt.sign(
-            { id: user.id, email: user.email, role: user.role },
-            JWT_SECRET,
-            { expiresIn: JWT_EXPIRES }
-        );
-
-        res.status(201).json({
-            message: 'Registration successful',
-            user: {
-                id: user.id,
-                email: user.email,
-                firstName: user.first_name,
-                lastName: user.last_name,
-                role: user.role
-            },
-            token
-        });
-
-    } catch (error) {
-        console.error('Register error:', error);
-        res.status(500).json({ error: { message: 'Registration failed' } });
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if already logged in
+    const user = getCurrentUser();
+    if (user) {
+        redirectToDashboard(user);
+        return;
+    }
+    
+    initAuthForms();
+    initPasswordToggle();
+    initAccountTypeToggle();
+    initForgotPassword();
+    
+    // Check URL params
+    const params = getUrlParams();
+    if (params.get('register') === 'therapist') {
+        showRegisterForm();
+        document.querySelector('[data-type="therapist"]').click();
+    } else if (params.get('register')) {
+        showRegisterForm();
+    } else if (params.get('reset')) {
+        showForgotForm();
     }
 });
 
-// Login
-router.post('/login', async (req, res) => {
-    const db = req.app.locals.db;
-    const { email, password } = req.body;
-
-    try {
-        if (!email || !password) {
-            return res.status(400).json({ error: { message: 'Email and password required' } });
-        }
-
-        // Find user
-        const result = await db.query(
-            'SELECT id, email, password_hash, first_name, last_name, role FROM users WHERE email = $1',
-            [email.toLowerCase()]
-        );
-
-        if (result.rows.length === 0) {
-            return res.status(401).json({ error: { message: 'Invalid credentials' } });
-        }
-
-        const user = result.rows[0];
-
-        // Check password
-        const validPassword = await bcrypt.compare(password, user.password_hash);
-        if (!validPassword) {
-            return res.status(401).json({ error: { message: 'Invalid credentials' } });
-        }
-
-        // Generate token
-        const token = jwt.sign(
-            { id: user.id, email: user.email, role: user.role },
-            JWT_SECRET,
-            { expiresIn: JWT_EXPIRES }
-        );
-
-        // Get therapist profile if applicable
-        let therapistId = null;
-        if (user.role === 'therapist') {
-            const therapistResult = await db.query(
-                'SELECT id FROM therapists WHERE user_id = $1',
-                [user.id]
-            );
-            if (therapistResult.rows.length > 0) {
-                therapistId = therapistResult.rows[0].id;
-            }
-        }
-
-        res.json({
-            message: 'Login successful',
-            user: {
-                id: user.id,
-                email: user.email,
-                firstName: user.first_name,
-                lastName: user.last_name,
-                role: user.role,
-                therapistId
-            },
-            token
-        });
-
-    } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ error: { message: 'Login failed' } });
-    }
-});
-
-// Verify token / Get current user
-router.get('/me', async (req, res) => {
-    const db = req.app.locals.db;
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ error: { message: 'No token provided' } });
-    }
-
-    const token = authHeader.split(' ')[1];
-
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET);
+// Initialize Auth Forms
+function initAuthForms() {
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const showRegisterLink = document.getElementById('showRegister');
+    const showLoginLink = document.getElementById('showLogin');
+    
+    // Toggle between forms
+    showRegisterLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showRegisterForm();
+    });
+    
+    showLoginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showLoginForm();
+    });
+    
+    // Login form submit
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
         
-        const result = await db.query(
-            'SELECT id, email, first_name, last_name, phone, role FROM users WHERE id = $1',
-            [decoded.id]
-        );
-
-        if (result.rows.length === 0) {
-            return res.status(404).json({ error: { message: 'User not found' } });
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const errorEl = document.getElementById('loginError');
+        const submitBtn = loginForm.querySelector('.auth-btn');
+        
+        errorEl.classList.remove('active');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner" style="width:20px;height:20px;border-width:2px;"></span>';
+        
+        try {
+            const data = await apiRequest('/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password })
+            });
+            
+            // Save auth data
+            setAuthToken(data.token);
+            setCurrentUser(data.user);
+            
+            showToast('Login successful!', 'success');
+            
+            // Redirect
+            setTimeout(() => redirectToDashboard(data.user), 500);
+            
+        } catch (error) {
+            errorEl.innerHTML = `${error.message || 'Login failed. Please try again.'} <a href="#" class="reset-link" onclick="showForgotForm(); return false;">Reset password?</a>`;
+            errorEl.classList.add('active');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Sign In</span><span class="material-icons-round">arrow_forward</span>';
         }
-
-        const user = result.rows[0];
-
-        // Get therapist profile if applicable
-        let therapist = null;
-        if (user.role === 'therapist') {
-            const therapistResult = await db.query(
-                'SELECT * FROM therapists WHERE user_id = $1',
-                [user.id]
-            );
-            if (therapistResult.rows.length > 0) {
-                therapist = therapistResult.rows[0];
-            }
+    });
+    
+    // Register form submit
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const firstName = document.getElementById('registerFirstName').value;
+        const lastName = document.getElementById('registerLastName').value;
+        const email = document.getElementById('registerEmail').value;
+        const phone = document.getElementById('registerPhone').value;
+        const password = document.getElementById('registerPassword').value;
+        const confirmPassword = document.getElementById('registerConfirmPassword').value;
+        const role = document.getElementById('registerRole').value;
+        const terms = document.getElementById('registerTerms').checked;
+        
+        const errorEl = document.getElementById('registerError');
+        const submitBtn = registerForm.querySelector('.auth-btn');
+        
+        errorEl.classList.remove('active');
+        
+        // Validation
+        if (password !== confirmPassword) {
+            errorEl.textContent = 'Passwords do not match';
+            errorEl.classList.add('active');
+            return;
         }
+        
+        if (password.length < 8) {
+            errorEl.textContent = 'Password must be at least 8 characters';
+            errorEl.classList.add('active');
+            return;
+        }
+        
+        if (!terms) {
+            errorEl.textContent = 'Please agree to the Terms of Service';
+            errorEl.classList.add('active');
+            return;
+        }
+        
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner" style="width:20px;height:20px;border-width:2px;"></span>';
+        
+        try {
+            const data = await apiRequest('/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email,
+                    password,
+                    firstName,
+                    lastName,
+                    phone,
+                    role
+                })
+            });
+            
+            // Save auth data
+            setAuthToken(data.token);
+            setCurrentUser(data.user);
+            
+            showToast('Account created successfully!', 'success');
+            
+            // Redirect
+            setTimeout(() => redirectToDashboard(data.user), 500);
+            
+        } catch (error) {
+            errorEl.textContent = error.message || 'Registration failed. Please try again.';
+            errorEl.classList.add('active');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Create Account</span><span class="material-icons-round">arrow_forward</span>';
+        }
+    });
+}
 
-        res.json({
-            user: {
-                id: user.id,
-                email: user.email,
-                firstName: user.first_name,
-                lastName: user.last_name,
-                phone: user.phone,
-                role: user.role
-            },
-            therapist
+// Initialize Forgot Password
+function initForgotPassword() {
+    const forgotLink = document.getElementById('forgotPassword');
+    const backToLogin = document.getElementById('backToLogin');
+    const forgotForm = document.getElementById('forgotForm');
+    
+    if (forgotLink) {
+        forgotLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showForgotForm();
         });
-
-    } catch (error) {
-        if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
-            return res.status(401).json({ error: { message: 'Invalid or expired token' } });
-        }
-        console.error('Auth check error:', error);
-        res.status(500).json({ error: { message: 'Authentication failed' } });
     }
-});
+    
+    if (backToLogin) {
+        backToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showLoginForm();
+        });
+    }
+    
+    if (forgotForm) {
+        forgotForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('forgotEmail').value;
+            const errorEl = document.getElementById('forgotError');
+            const successEl = document.getElementById('forgotSuccess');
+            const submitBtn = forgotForm.querySelector('.auth-btn');
+            
+            errorEl.classList.remove('active');
+            successEl.classList.remove('active');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner" style="width:20px;height:20px;border-width:2px;"></span>';
+            
+            try {
+                await apiRequest('/auth/forgot-password', {
+                    method: 'POST',
+                    body: JSON.stringify({ email })
+                });
+                
+                successEl.textContent = 'Password reset link sent! Check your email.';
+                successEl.classList.add('active');
+                submitBtn.innerHTML = '<span>Email Sent</span><span class="material-icons-round">check</span>';
+                
+            } catch (error) {
+                // Don't reveal if email exists or not for security
+                successEl.textContent = 'If this email exists, you will receive a reset link shortly.';
+                successEl.classList.add('active');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>Send Reset Link</span><span class="material-icons-round">send</span>';
+            }
+        });
+    }
+}
 
-module.exports = router;
+// Password visibility toggle
+function initPasswordToggle() {
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.dataset.target;
+            const input = document.getElementById(targetId);
+            const icon = btn.querySelector('.material-icons-round');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        });
+    });
+}
+
+// Account type toggle (consumer/therapist)
+function initAccountTypeToggle() {
+    const typeButtons = document.querySelectorAll('.type-btn');
+    const roleInput = document.getElementById('registerRole');
+    
+    typeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            typeButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            roleInput.value = btn.dataset.type;
+        });
+    });
+}
+
+// Show register form
+function showRegisterForm() {
+    document.getElementById('loginCard').style.display = 'none';
+    document.getElementById('registerCard').style.display = 'block';
+    const forgotCard = document.getElementById('forgotCard');
+    if (forgotCard) forgotCard.style.display = 'none';
+}
+
+// Show login form
+function showLoginForm() {
+    document.getElementById('registerCard').style.display = 'none';
+    document.getElementById('loginCard').style.display = 'block';
+    const forgotCard = document.getElementById('forgotCard');
+    if (forgotCard) forgotCard.style.display = 'none';
+}
+
+// Show forgot password form
+function showForgotForm() {
+    document.getElementById('loginCard').style.display = 'none';
+    document.getElementById('registerCard').style.display = 'none';
+    const forgotCard = document.getElementById('forgotCard');
+    if (forgotCard) forgotCard.style.display = 'block';
+}
+
+// Redirect to appropriate dashboard
+function redirectToDashboard(user) {
+    if (user.role === 'therapist') {
+        window.location.href = 'dashboard.html';
+    } else {
+        window.location.href = 'index.html';
+    }
+}
