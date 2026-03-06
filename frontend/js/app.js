@@ -85,7 +85,9 @@ function initPWAInstall() {
 
 // Service Worker Registration
 function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
+ // Comment out service worker for now
+/*
+ if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
             try {
                 const registration = await navigator.serviceWorker.register('/sw.js');
@@ -96,7 +98,7 @@ function registerServiceWorker() {
         });
     }
 }
-
+*/
 // Check Auth State and Update UI
 function checkAuthState() {
     const user = getCurrentUser();
