@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initAuthForms();
     initPasswordToggle();
     initAccountTypeToggle();
+    initForgotPassword();
     
     // Check URL params
     const params = getUrlParams();
@@ -19,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('[data-type="therapist"]').click();
     } else if (params.get('register')) {
         showRegisterForm();
+    } else if (params.get('reset')) {
+        showForgotForm();
     }
 });
 
@@ -69,7 +72,7 @@ function initAuthForms() {
             setTimeout(() => redirectToDashboard(data.user), 500);
             
         } catch (error) {
-            errorEl.textContent = error.message || 'Login failed. Please try again.';
+            errorEl.innerHTML = `${error.message || 'Login failed. Please try again.'} <a href="#" class="reset-link" onclick="showForgotForm(); return false;">Reset password?</a>`;
             errorEl.classList.add('active');
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<span>Sign In</span><span class="material-icons-round">arrow_forward</span>';
@@ -147,6 +150,61 @@ function initAuthForms() {
     });
 }
 
+// Initialize Forgot Password
+function initForgotPassword() {
+    const forgotLink = document.getElementById('forgotPassword');
+    const backToLogin = document.getElementById('backToLogin');
+    const forgotForm = document.getElementById('forgotForm');
+    
+    if (forgotLink) {
+        forgotLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showForgotForm();
+        });
+    }
+    
+    if (backToLogin) {
+        backToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showLoginForm();
+        });
+    }
+    
+    if (forgotForm) {
+        forgotForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('forgotEmail').value;
+            const errorEl = document.getElementById('forgotError');
+            const successEl = document.getElementById('forgotSuccess');
+            const submitBtn = forgotForm.querySelector('.auth-btn');
+            
+            errorEl.classList.remove('active');
+            successEl.classList.remove('active');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner" style="width:20px;height:20px;border-width:2px;"></span>';
+            
+            try {
+                await apiRequest('/auth/forgot-password', {
+                    method: 'POST',
+                    body: JSON.stringify({ email })
+                });
+                
+                successEl.textContent = 'Password reset link sent! Check your email.';
+                successEl.classList.add('active');
+                submitBtn.innerHTML = '<span>Email Sent</span><span class="material-icons-round">check</span>';
+                
+            } catch (error) {
+                // Don't reveal if email exists or not for security
+                successEl.textContent = 'If this email exists, you will receive a reset link shortly.';
+                successEl.classList.add('active');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>Send Reset Link</span><span class="material-icons-round">send</span>';
+            }
+        });
+    }
+}
+
 // Password visibility toggle
 function initPasswordToggle() {
     document.querySelectorAll('.toggle-password').forEach(btn => {
@@ -184,12 +242,24 @@ function initAccountTypeToggle() {
 function showRegisterForm() {
     document.getElementById('loginCard').style.display = 'none';
     document.getElementById('registerCard').style.display = 'block';
+    const forgotCard = document.getElementById('forgotCard');
+    if (forgotCard) forgotCard.style.display = 'none';
 }
 
 // Show login form
 function showLoginForm() {
     document.getElementById('registerCard').style.display = 'none';
     document.getElementById('loginCard').style.display = 'block';
+    const forgotCard = document.getElementById('forgotCard');
+    if (forgotCard) forgotCard.style.display = 'none';
+}
+
+// Show forgot password form
+function showForgotForm() {
+    document.getElementById('loginCard').style.display = 'none';
+    document.getElementById('registerCard').style.display = 'none';
+    const forgotCard = document.getElementById('forgotCard');
+    if (forgotCard) forgotCard.style.display = 'block';
 }
 
 // Redirect to appropriate dashboard
